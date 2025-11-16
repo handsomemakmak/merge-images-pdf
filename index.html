@@ -3,15 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Merge Images to PDF</title>
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Merge Images to PDF - รวมรูปเป็น PDF</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="root"></div>
-    <script type="text/babel" src="app.js"></script>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Merge Images to PDF</h1>
+            <p>รวมภาพหลายรูปเป็นไฟล์ PDF เดียว ใช้งานง่าย ไม่ต้องสมัครสมาชิก</p>
+        </div>
+
+        <!-- Upload Area -->
+        <div class="upload-area" id="uploadArea">
+            <div class="upload-content">
+                <svg class="upload-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="17 8 12 3 7 8"/>
+                    <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                <h2>อัปโหลดภาพของคุณ</h2>
+                <p>ลากและวางไฟล์ หรือคลิกเพื่อเลือกไฟล์</p>
+                <button class="btn-primary" onclick="document.getElementById('fileInput').click()">เลือกไฟล์</button>
+                <input type="file" id="fileInput" multiple accept="image/png,image/jpeg,image/jpg" style="display: none;">
+                <p class="upload-info">รองรับ PNG และ JPG • ไม่จำกัดจำนวนไฟล์</p>
+            </div>
+        </div>
+
+        <!-- Image Counter & Convert Button -->
+        <div class="action-bar" id="actionBar" style="display: none;">
+            <div class="image-count">
+                <span class="count-number" id="imageCount">0</span> ภาพ
+            </div>
+            <button class="btn-convert" id="convertBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="12" y1="18" x2="12" y2="12"/>
+                    <polyline points="9 15 12 18 15 15"/>
+                </svg>
+                <span>แปลงเป็น PDF</span>
+            </button>
+        </div>
+
+        <!-- Images Grid -->
+        <div class="images-container" id="imagesContainer" style="display: none;">
+            <h3>ภาพที่อัปโหลด (ลากเพื่อจัดเรียงลำดับ)</h3>
+            <div class="images-grid" id="imagesGrid"></div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="instructions" id="instructions">
+            <h3>วิธีใช้งาน</h3>
+            <ol>
+                <li>
+                    <span class="step-number">1</span>
+                    <span>อัปโหลดภาพ PNG หรือ JPG ไม่จำกัดจำนวนไฟล์</span>
+                </li>
+                <li>
+                    <span class="step-number">2</span>
+                    <span>ลากและวางภาพเพื่อจัดเรียงลำดับตามที่ต้องการ</span>
+                </li>
+                <li>
+                    <span class="step-number">3</span>
+                    <span>คลิกปุ่ม "แปลงเป็น PDF" เพื่อสร้างไฟล์ PDF</span>
+                </li>
+                <li>
+                    <span class="step-number">4</span>
+                    <span>ดาวน์โหลดไฟล์ PDF ได้ทันที ไม่ต้องสมัครสมาชิก</span>
+                </li>
+            </ol>
+            <div class="note">
+                <strong>หมายเหตุ:</strong> การประมวลผลทั้งหมดทำงานบนเครื่องของคุณ 
+                ไฟล์ของคุณจะไม่ถูกส่งไปยังเซิร์ฟเวอร์ใดๆ เพื่อความปลอดภัยและความเป็นส่วนตัว
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>ปลอดภัย • ไม่เก็บข้อมูล • ประมวลผลบนเครื่องของคุณ</p>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+            <div class="loading-spinner"></div>
+            <p>กำลังแปลงเป็น PDF...</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
 </body>
 </html>

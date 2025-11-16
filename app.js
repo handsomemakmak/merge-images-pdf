@@ -105,24 +105,26 @@ const MergeImagesToPDF = () => {
             const imgWidth = imgElement.width;
             const imgHeight = imgElement.height;
             
-            // Convert pixels to mm (assuming 96 DPI)
-            const mmWidth = (imgWidth * 25.4) / 96;
-            const mmHeight = (imgHeight * 25.4) / 96;
+            // Convert pixels to points (1 point = 1/72 inch)
+            // Using 72 DPI as standard for PDF
+            const ptWidth = imgWidth * (72 / 96);
+            const ptHeight = imgHeight * (72 / 96);
             
             // Create PDF with exact image dimensions for first image
             if (i === 0) {
               pdf = new jsPDF({
-                orientation: mmWidth > mmHeight ? 'landscape' : 'portrait',
-                unit: 'mm',
-                format: [mmWidth, mmHeight]
+                orientation: ptWidth > ptHeight ? 'l' : 'p',
+                unit: 'pt',
+                format: [ptWidth, ptHeight],
+                compress: true
               });
             } else {
               // Add new page with dimensions matching current image
-              pdf.addPage([mmWidth, mmHeight], mmWidth > mmHeight ? 'landscape' : 'portrait');
+              pdf.addPage([ptWidth, ptHeight], ptWidth > ptHeight ? 'l' : 'p');
             }
             
-            // Add image at full page size (no margins, no white borders)
-            pdf.addImage(img.preview, 'JPEG', 0, 0, mmWidth, mmHeight);
+            // Add image at full page size with high quality
+            pdf.addImage(img.preview, 'JPEG', 0, 0, ptWidth, ptHeight, undefined, 'FAST');
             resolve();
           };
         });
